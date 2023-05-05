@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Untitled Idle</title>
+  <style>
+    body {
+      background-color: #000010;
+      color: white;
+      font-family: Comic Sans MS;
+      text-align: center;
+      background-image: url('image\ \(1\).png'), url('');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    #bubble-count {
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    #collect-bubble {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+      background-color: #000000;
+      border: 5px solid red;
+      color: white;
+    }
+
+    #upgrade-shop {
+      margin-bottom: 10px;
+    }
+
+    .upgrade {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin-right: 10px;
+      background-color: #000000;
+      border: 5px solid red;
+      color: white;
+      font-family: Comic Sans MS;
+    }
+
+    #bps-display {
+      font-size: 18px;
+    }
+
+    #footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #00000000;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    #prestige {
+      font-size: 20px;
+      color: #fff;
+    }
+
+    #mini-player {
+      position: fixed;
+      bottom: 100;
+      left: 25%;
+      width: 50%;
+      height: 60px;
+      background-color: #00000050;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    #skip-btn,
+    #pause-btn {
+      background-color: transparent;
+      color: #fff;
+      border-color: solid black;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #song-name {
+      font-size: 20px;
+    }
+
+    .shop {
+      position: fixed;
+      top: 50%;
+      left: 75%;
+      transform: translateY(-50%);
+      background-color: #00000000;
+      padding: 20px;
+    }
+
+    .shop-title {
+      font-family: Comic Sans MS, cursive, sans-serif;
+      color: white;
+      margin-top: 0;
+    }
+
+    .gainz-container {
+      position: fixed;
+      top: 30%;
+      left: .3%;
+      width: 100%;
+      text-align: center;
+    }
+
+    .gainz-text {
+      font-size: 50px;
+      text-align: center;
+    }
+
+    .collect-center {
+      position: fixed;
+      top: 43%;
+      left: 45.5%;
+    }
+
+    .gps-container {
+      position: fixed;
+      top: 55%;
+      left: 44.5%;
+      text-align: center;
+    }
+
+    .gps-text {
+      font-size: 18px;
+    }
+
+    .prestige-container {
+      position: fixed;
+      top: 35%;
+      left: 10%;
+    }
+
+    .music {
+      position: fixed;
+      top: auto;
+      left: auto;
+    }
+
+    button {
+      transition: transform 0.2s ease-in-out;
+      font-family: Comic Sans MS;
+      padding: 10px;
+    }
+
+    button:active {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="gainz-container gainz-text" id="bubble-count">0</div>
+  <button class="collect-center" id="collect-bubble">Get Gainz</button>
+  <div class="shop" id="upgrade-shop">
+    <h2 class="shop-title">Gainz Shop</h2>
+    <button id="upgrade-1" class="upgrade">Gainz 1 (Cost: 10)</button>
+    <button id="upgrade-2" class="upgrade">Gainz 2 (Cost: 25)</button>
+    <button id="upgrade-3" class="upgrade">Gainz 3 (Cost: 50)</button>
+    <button id="upgrade-4" class="upgrade">Gainz 4 (Cost: 1000)</button>
+    <button id="upgrade-5" class="upgrade">Gainz 5 (Cost: 5000)</button>
+    <button id="upgrade-6" class="upgrade">Gainz 6 (Cost: 10000)</button>
+    <button id="upgrade-7" class="upgrade">Gainz 7 (Cost: 50000)</button>
+    <button id="upgrade-8" class="upgrade">Gainz 8 (Cost: 100000)</button>
+    <button id="upgrade-9" class="upgrade">Gainz 9 (Cost: 500000)</button>
+  </div>
+  <div class="gps-container gps-text" id="bps-display">Gainz per second: 0</div>
+  <div id="footer">Tom says, "Better than Cookie Clicker!"</div>
+  <div class="prestige-container" id="prestige">Prestige Coming Soon!</div>
+  <div class="music" id="mini-player">
+    <button id="skip-btn">Skip</button>
+    <button id="pause-btn">Pause</button>
+    <span id="song-name">Song Name</span>
+  </div>
+
+
+  <script>
+    var bubbleCount = 0;
+    var bps = 0;
+    var upgradeCosts = [10, 25, 50, 1000, 5000, 10000, 50000, 100000, 500000,];
+    var upgradeButtons = document.getElementsByClassName("upgrade");
+    const songs = [
+      {name: "223 AM", url: "2_23 AM _ ã__ã__ã__ã__ (320 kbps).mp3"},
+      {name: "U Got That", url: "Halogen - U Got That.mp3"},
+      {name: "sans", url: "Undertale_OST_015_-_sans.mp3"},
+    ];
+
+    for (var i = 0; i < upgradeButtons.length; i++) {
+      (function (index) {
+        upgradeButtons[index].addEventListener("click", function () {
+          if (bubbleCount >= upgradeCosts[index]) {
+            bubbleCount -= upgradeCosts[index];
+            upgradeCosts[index] = Math.ceil(upgradeCosts[index] * 1.015);
+            upgradeButtons[index].innerHTML = "Gainz " + (index + 1) + " (Cost: " + upgradeCosts[index] + ")";
+            document.getElementById("bubble-count").innerHTML = bubbleCount;
+            bps += [1, 2, 5, 10, 50, 100, 500, 1000, 5000, 999999999][index];
+            document.getElementById("bps-display").innerHTML = "Gainz per second: " + bps.toFixed(2);
+          }
+        });
+      })(i);
+    }
+
+    document.getElementById("collect-bubble").addEventListener("click", function () {
+      bubbleCount++;
+      document.getElementById("bubble-count").innerHTML = bubbleCount;
+    });
+
+    document.getElementById("skip-btn").addEventListener("click", function () {
+      currentSongIndex++;
+      if (currentSongIndex >= songs.length) {
+        currentSongIndex = 0;
+      }
+      audio.pause();
+      audio = new Audio(songs[currentSongIndex].url);
+      audio.play();
+      document.getElementById("song-name").innerHTML = songs[currentSongIndex].name;
+    });
+
+    document.getElementById("pause-btn").addEventListener("click", function () {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+
+    // Add setInterval function to update bubble count and bps
+    setInterval(function () {
+      bubbleCount += bps;
+      document.getElementById("bubble-count").innerHTML = bubbleCount;
+    }, 1000);
+
+    let currentSongIndex = 0;
+    let audio = new Audio(songs[currentSongIndex].url);
+    audio.play();
+    document.getElementById("song-name").innerHTML = songs[currentSongIndex].name;
+
+    audio.addEventListener("ended", function () {
+      currentSongIndex++;
+      if (currentSongIndex >= songs.length) {
+        currentSongIndex = 0;
+      }
+      audio = new Audio(songs[currentSongIndex].url);
+      audio.play();
+      document.getElementById("song-name").innerHTML = songs[currentSongIndex].name;
+    });
+  </script>
+</body>
+
+</html>
